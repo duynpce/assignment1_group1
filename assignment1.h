@@ -4,11 +4,14 @@
 #include<stdlib.h>
 #include<stdbool.h>
 #include<string.h>
+
 typedef struct student{
 int ID;
 char FirstName[100], LastName[100];
 float GPA;
 }student;
+
+void delete_buffer();
 void print_menu();
 int make_choice(int min, int max);
 void add();
