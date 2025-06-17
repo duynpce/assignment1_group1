@@ -79,7 +79,7 @@ void add(){
       delete_buffer();
    }while(ret==0);//nhap GPA
    
-   fprintf(add_text,"%d |%s|%s| %f",ID,first_name,last_name,GPA);/// dien thong tin vao file, format dien vao la "id,|first name|last name| GPA"; để dễ  kiểm soát
+   fprintf(add_text,"%d |%s|%s| %f\n",ID,first_name,last_name,GPA);/// dien thong tin vao file, format dien vao la "id,|first name|last name| GPA"; để dễ  kiểm soát
    fclose(add_text);///dong file 
    printf("add successfully\n");
 
