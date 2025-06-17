@@ -64,11 +64,11 @@ void add(){
       ret=scanf("%d",&ID);
       delete_buffer();
    }while(ret==0);// nhap ID
-      
+
    printf("please enter a student's first name: ");
    scanf("%[^\n]s",first_name);
    delete_buffer();// nhap first name
-   
+
    printf("please enter a student's last name: ");
    scanf("%[^\n]s",last_name);
    delete_buffer();//nhap last name
@@ -78,9 +78,9 @@ void add(){
       ret=scanf("%f",&GPA);
       delete_buffer();
    }while(ret==0);//nhap GPA
-   
+
    fprintf(add_text,"%d |%s|%s| %f\n",ID,first_name,last_name,GPA);/// dien thong tin vao file, format dien vao la "id,|first name|last name| GPA"; để dễ  kiểm soát
-   fclose(add_text);///dong file 
+   fclose(add_text);///dong file
    printf("add successfully\n");
 
 }
@@ -91,6 +91,37 @@ void delete(){}
 
 void search_by_id(){}
 
-void search_by_name(){}
+void search_by_name() {
+    char targetLastName[100];
+    printf("Enter last name to search: ");
+    scanf("%s", targetLastName);  // Đọc họ cần tìm
+
+    FILE *f = fopen("student.txt", "r");
+    if (f == NULL) {
+        printf("Cannot open file student.txt.\n");
+        return;
+    }
+
+    student s;
+    int found = 0;
+
+    printf("\n%-10s %-15s %-15s %-5s\n", "ID", "First Name", "Last Name", "GPA");
+    printf("-----------------------------------------------------\n");
+
+    // Đọc từng sinh viên trong file
+    while (fscanf(f, "%d %s %s %f", &s.ID, s.FirstName, s.LastName, &s.GPA) == 4) {
+        if (strcmp(s.LastName, targetLastName) == 0) {
+            printf("%-10d %-15s %-15s %.2f\n", s.ID, s.FirstName, s.LastName, s.GPA);
+            found = 1;
+        }
+    }
+
+    if (!found) {
+        printf("No student found with last name \"%s\".\n", targetLastName);
+    }
+
+    fclose(f);
+}
+
 
 void display(){}
