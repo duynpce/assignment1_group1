@@ -86,7 +86,64 @@ void add(){
 }
 
 void edit(){
-   //sjadjsajdsidijs
+   int MustFindID;
+   int n=0,found=-1;
+   student students[1000];
+   printf("Enter Student's ID that you want to edit: "); 
+   scanf("%d", &MustFindID);
+   FILE *f = fopen("student.txt","r");
+   while (fscanf(f,"%d %s %d %f",&students[n].ID, &students[n].FirstName, &students[n].LastName, &students[n].GPA) == 4)
+   {
+      n++;
+      if (students[n].ID==MustFindID)
+      {
+         found=n;
+      }
+   }
+   fclose(f);
+   remove("student.txt");
+   if (found==-1) printf("Student with ID: %d does not exist",MustFindID);
+   else
+   {
+      int type;
+      printf("Type a number choose information that you want to edit: ");
+      printf("1: First Name");
+      printf("2: Last Name");
+      printf("3: GPA");
+      scanf("%d",&type);
+      switch (type)
+      {
+         case 1:
+         char NewFirstName[100];
+         printf("Type New First Name: ");
+         scanf("%s",NewFirstName);
+         strcpy(students[found].FirstName,NewFirstName);
+         break;
+
+         case 2:
+         char NewLastName[100];
+         printf("Type New Last Name: ");
+         scanf("%s",NewLastName);
+         strcpy(students[found].LastName,NewLastName);
+         break;
+
+         case 3:
+         int NewGPA;
+         printf("Type New GPA: ");
+         scanf("%d", &NewGPA);
+         students[found].GPA=NewGPA;
+         break;
+         defaut:
+         printf("Please type in range [1,3]\n");
+         }
+
+         FILE *f=fopen("student.txt","w");
+         for (int i = 0; i < n; i++) {
+         fprintf(f,"%d %s %s %f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
+         fclose(f);
+         printf("Edit successfully\n");
+   }
+   }
 }
 
 void delete()
