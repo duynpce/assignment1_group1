@@ -95,8 +95,8 @@ void edit(){
    student students[1000];
    printf("Enter Student's ID that you want to edit: ");
    scanf("%d", &MustFindID);
-   FILE *f = fopen("student.txt","r");
-   while (fscanf(f,"%d|%99[^|]|%99[^|]|%f",&students[StudentIndex].ID, students[StudentIndex].FirstName, students[StudentIndex].LastName, &students[StudentIndex].GPA) == 4)
+   FILE *fi = fopen("student.txt","r");
+   while (fscanf(fi,"%d|%99[^|]|%99[^|]|%f",&students[StudentIndex].ID, students[StudentIndex].FirstName, students[StudentIndex].LastName, &students[StudentIndex].GPA) == 4)
    {
       if (students[StudentIndex].ID==MustFindID)
       {
@@ -104,7 +104,7 @@ void edit(){
       }
       StudentIndex++;
    }
-   fclose(f);
+   fclose(fi);
    remove("student.txt");
    if (found==-1)
    {
@@ -156,10 +156,10 @@ void edit(){
       }
       while (type);
 
-         FILE *f=fopen("student.txt","w");
+         FILE *fo=fopen("student.txt","w");
          for (int i = 0; i < StudentIndex; i++) {
-         fprintf(f,"%d|%s|%s|%.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
-         fclose(f);
+         fprintf(fo,"%d|%s|%s|%.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
+         fclose(fo);
          printf("Edit successfully\n");
    }
 }
@@ -257,3 +257,20 @@ void search_by_name() {
 
 
 void display(){}
+int main()
+{
+ void (*funs[7])(void) = {NULL, &add, &edit, &delete, &search_by_id, &search_by_name, &display};
+ int choice;
+ do
+ {
+ choice = make_choice(0, 6);
+ if (choice)
+ {
+ funs[choice]();
+ printf("\nPress any key to return to the menu.");
+ getchar();
+ }
+ } while (choice);
+return 0;
+}
+
