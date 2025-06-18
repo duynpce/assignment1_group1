@@ -50,7 +50,7 @@ int make_choice(int min, int max){
 }
 
 void add(){
-   int ID,ret;//tao id va ret(bien kiem tra xem nhap co thanh cong hay khong)
+   int ID,ret=-1;//tao id va ret(bien kiem tra xem nhap co thanh cong hay khong)
    char first_name[100],last_name[100]; ///tao first name voi last name
    float GPA;//tao GPA
    FILE * add_text=fopen("student.txt","a");///tao file de them du lieu vao neu nhu file khong ton tai neu file ton tai thi them du lieu vao
@@ -60,28 +60,35 @@ void add(){
    }
 
    do {
+      if(ret!=-1) printf("invalid ID\n");
       printf("please enter a student's ID: ");
       ret=scanf("%d",&ID);
       delete_buffer();
-   }while(ret==0);// nhap ID
+   }while(ret==0 || ID <0);// nhap ID
 
+   ret=-1;
    do{
+       if(ret!=-1) printf("Invalid first name\n");
        printf("please enter a student's first name: ");
-       scanf("%[^\n]",first_name);
+       ret=scanf("%99[^\n]",first_name);
        delete_buffer();// nhap first name
-   }while(first_name[0]!='\n');
+   }while(ret==0);
 
+   ret=-1;
    do{
+       if(ret!=-1) printf("Invalid last name\n");
        printf("please enter a student's last name: ");
-       scanf("%[^\n]",last_name);
+       scanf("%99[^\n]",last_name);
        delete_buffer();//nhap last name
-    }while(last_name[0]!='\n');
+    }while(ret==0);
 
+    ret=-1;///dieu kien check xem co phai lan dau chay khong
    do {
+      if(ret!=-1) printf("invalid GPA\n");
       printf("please enter a student's GPA: ");
       ret=scanf("%f",&GPA);
       delete_buffer();
-   }while(ret==0);//nhap GPA
+   }while(ret==0 || GPA>10 || GPA <0);//nhap GPA
 
    fprintf(add_text,"%d |%s|%s| %f\n",ID,first_name,last_name,GPA);/// dien thong tin vao file, format dien vao la "id,|first name|last name| GPA"; để dễ  kiểm soát
    fclose(add_text);///dong file
@@ -162,6 +169,7 @@ void edit(){
          fclose(fo);
          printf("Edit successfully\n");
    }
+
 }
 
 void delete()
