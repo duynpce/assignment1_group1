@@ -209,7 +209,7 @@ void search_by_id(){}
 void search_by_name() {
     char targetLastName[100];
     printf("Enter last name to search: ");
-    scanf("%s", targetLastName);  // Đọc họ cần tìm
+    scanf(" %[^\n]", targetLastName);  // Đọc họ cần tìm
 
     FILE *f = fopen("student.txt", "r");
     if (f == NULL) {
@@ -224,7 +224,7 @@ void search_by_name() {
     printf("-----------------------------------------------------\n");
 
     // Đọc từng sinh viên trong file
-    while (fscanf(f, "%d %s %s %f", &s.ID, s.FirstName, s.LastName, &s.GPA) == 4) {
+    while (fscanf(f, "%d |%99[^|]|%99[^|]| %f", &s.ID, s.FirstName, s.LastName, &s.GPA) == 4) {
         if (strcmp(s.LastName, targetLastName) == 0) {
             printf("%-10d %-15s %-15s %.2f\n", s.ID, s.FirstName, s.LastName, s.GPA);
             found = 1;
