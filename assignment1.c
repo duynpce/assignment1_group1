@@ -65,13 +65,17 @@ void add(){
       delete_buffer();
    }while(ret==0);// nhap ID
 
-   printf("please enter a student's first name: ");
-   scanf("%[^\n]s",first_name);
-   delete_buffer();// nhap first name
+   do{
+       printf("please enter a student's first name: ");
+       scanf("%[^\n]",first_name);
+       delete_buffer();// nhap first name
+   }while(first_name[0]!='\n');
 
-   printf("please enter a student's last name: ");
-   scanf("%[^\n]s",last_name);
-   delete_buffer();//nhap last name
+   do{
+       printf("please enter a student's last name: ");
+       scanf("%[^\n]",last_name);
+       delete_buffer();//nhap last name
+    }while(last_name[0]!='\n');
 
    do {
       printf("please enter a student's GPA: ");
@@ -89,7 +93,7 @@ void edit(){
    int MustFindID;
    int n=0,found=-1;
    student students[1000];
-   printf("Enter Student's ID that you want to edit: "); 
+   printf("Enter Student's ID that you want to edit: ");
    scanf("%d", &MustFindID);
    FILE *f = fopen("student.txt","r");
    while (fscanf(f,"%d %s %d %f",&students[n].ID, &students[n].FirstName, &students[n].LastName, &students[n].GPA) == 4)
