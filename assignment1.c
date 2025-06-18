@@ -153,19 +153,23 @@ void edit(){
 void delete()
 {
     int id, found = 0, ret, targetID;///tao id, ID can xoa, co danh dau hop le va co danh dau neu xoa thanh cong
-    char first_name[100], last_name[100]; ///tao first name voi last name
+    char first_name[100], last_name[100], input[100], word; ///tao first name voi last name, input va word de check xem co ki tu khi nhap hay khong
     float gpa; ///tao gpa
+    int isValid; ///kiem tra ID neu dung hoac sai
 
-    do
-    {
-        printf("Please enter the ID of the student you desire to remove: ");
-        ret = scanf("%d", &targetID);
-        if(ret == 0 || targetID < 0)
-            {
-                printf("Invalid ID format, please try again.\n");
-                getchar();
-            }
-    }while(ret == 0 || targetID < 0); /// nhap va kiem tra ID
+   do {
+        printf("Enter the student's ID you desire to remove: ");
+        fgets(input, sizeof(input), stdin); /// doc ca dong
+
+        input[strcspn(input, "\n")] = '\0';/// Xoa enter neu co
+
+        if (sscanf(input, "%d %c", &targetID, &word) != 1 || targetID < 0) {
+            printf("Invalid ID format, please try again!\n");
+            isValid = 0; ///sai
+        } else {
+            isValid = 1; /// dung, thoat vong lap
+        }
+    } while (!isValid);
 
     FILE * delete_student = fopen("student.txt","r");///mo file student.txt o che do doc
     FILE * temp = fopen("temp.txt","w");///tao mot file tam o che do ghi
@@ -201,7 +205,6 @@ void delete()
         rename("temp.txt","student.txt");///doi ten file temp thanh student.txt
         printf("Remove successfully!\n"); /// xoa thanh cong
    }
-   getchar();
 }
 
 void search_by_id(){}
