@@ -104,7 +104,7 @@ void edit(){
    printf("Enter Student's ID that you want to edit: ");
    scanf("%d", &MustFindID);
    FILE *fi = fopen("student.txt","r");
-   while (fscanf(fi,"%d|%99[^|]|%99[^|]|%f",&students[StudentIndex].ID, students[StudentIndex].FirstName, students[StudentIndex].LastName, &students[StudentIndex].GPA) == 4)
+   while (fscanf(fi,"%d |%99[^|]|%99[^|]| %f",&students[StudentIndex].ID, students[StudentIndex].FirstName, students[StudentIndex].LastName, &students[StudentIndex].GPA) == 4)
    {
       if (students[StudentIndex].ID==MustFindID)
       {
@@ -152,13 +152,13 @@ void edit(){
 
          case 3:
          {
-            int NewGPA;
+            float NewGPA;
             printf("Type New GPA: ");
             scanf("%d", &NewGPA);
             students[found].GPA=NewGPA;
             break;
          }
-         defaut:
+         default:
             printf("Please type a NUMBER in range [1,3]\n");
          }
       }
@@ -166,7 +166,7 @@ void edit(){
          remove("student.txt");
          FILE *fo=fopen("student.txt","w");
          for (int i = 0; i < StudentIndex; i++) {
-         fprintf(fo,"%d|%s|%s|%.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
+         fprintf(fo,"%d |%s|%s| %.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
          fclose(fo);
          printf("Edit successfully\n");
    }
