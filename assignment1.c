@@ -97,6 +97,7 @@ void add(){
 }
 
 void edit(){
+   void edit(){
    int MustFindID;
    int StudentIndex=0,found=-1;
    student students[1000];
@@ -112,7 +113,6 @@ void edit(){
       StudentIndex++;
    }
    fclose(fi);
-   remove("student.txt");
    if (found==-1)
    {
       printf("Student with ID: %d does not exist\n",MustFindID);
@@ -122,11 +122,12 @@ void edit(){
    int type=-1;
    do
    {
-      printf("Choose an option: \n");
+      type=-1;
       printf("1: First Name\n");
       printf("2: Last Name\n");
       printf("3: GPA\n");
-      printf("0: Exit");
+      printf("0: Exit\n");
+      printf("Choose an option: ");
       scanf("%d",&type);
       delete_buffer();
       switch (type)
@@ -161,14 +162,16 @@ void edit(){
             printf("Please type a NUMBER in range [1,3]\n");
          }
       }
-      while (type);
-
+      while (type!=0);
+         remove("student.txt");
          FILE *fo=fopen("student.txt","w");
          for (int i = 0; i < StudentIndex; i++) {
          fprintf(fo,"%d|%s|%s|%.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
          fclose(fo);
          printf("Edit successfully\n");
    }
+
+}
 
 }
 
@@ -298,20 +301,3 @@ void search_by_name() {
 
 
 void display(){}
-int main()
-{
- void (*funs[7])(void) = {NULL, &add, &edit, &delete, &search_by_id, &search_by_name, &display};
- int choice;
- do
- {
- choice = make_choice(0, 6);
- if (choice)
- {
- funs[choice]();
- printf("\nPress any key to return to the menu.");
- getchar();
- }
- } while (choice);
-return 0;
-}
-
