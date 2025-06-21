@@ -96,7 +96,6 @@ void add(){
 
 }
 
-void edit(){
    void edit(){
    int MustFindID;
    int StudentIndex=0,found=-1;
@@ -123,10 +122,10 @@ void edit(){
    do
    {
       type=-1;
-      printf("1: First Name\n");
-      printf("2: Last Name\n");
-      printf("3: GPA\n");
-      printf("0: Exit\n");
+      printf("1: New First Name\n");
+      printf("2: New Last Name\n");
+      printf("3: New GPA\n");
+      printf("0: Exit (Edit Completed)\n");
       printf("Choose an option: ");
       scanf("%d",&type);
       delete_buffer();
@@ -137,6 +136,7 @@ void edit(){
             char NewFirstName[100];
             printf("Type New First Name: ");
             scanf("%s",NewFirstName);
+            delete_buffer();
             strcpy(students[found].FirstName,NewFirstName);
             break;
          }
@@ -146,6 +146,7 @@ void edit(){
             char NewLastName[100];
             printf("Type New Last Name: ");
             scanf("%99[^\n]",NewLastName);
+            delete_buffer();
             strcpy(students[found].LastName,NewLastName);
             break;
          }
@@ -154,11 +155,13 @@ void edit(){
          {
             float NewGPA;
             printf("Type New GPA: ");
-            scanf("%d", &NewGPA);
+            scanf("%f", &NewGPA);
             students[found].GPA=NewGPA;
+            delete_buffer();
             break;
          }
          default:
+         if (type!=0)
             printf("Please type a NUMBER in range [1,3]\n");
          }
       }
@@ -173,7 +176,6 @@ void edit(){
 
 }
 
-}
 
 void delete()
 {
