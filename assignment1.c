@@ -153,11 +153,15 @@ void add(){
 
          case 3:
          {
-            float NewGPA;
-            printf("Type New GPA: ");
-            scanf("%f", &NewGPA);
-            students[found].GPA=NewGPA;
-            delete_buffer();
+         float NewGPA;
+         int ret=-1;///dieu kien check xem co phai lan dau chay khong
+         do {
+         if(ret!=-1) printf("invalid GPA\n");
+         printf("Type New GPA: ");
+         ret=scanf("%f",&NewGPA);
+         students[found].GPA = NewGPA;
+         delete_buffer();
+         }while(ret==0 || NewGPA>10 || NewGPA <0);//nhap GPA
             break;
          }
          default:
