@@ -239,22 +239,26 @@ void delete()
 }
 
 void search_by_id(){
-   FILE *f = fopen("student.txt", "r"); //open file to read
-   if (f == NULL) {    //if file not open => error
+ int ID,ret=-1;
+    FILE *f = fopen("student.txt", "r"); //open file to read
+    if (f == NULL) {    //if file not open => error
         printf("Cannot open student.txt\n");
         return;
     }
 
-   int search_ID;   //input ID find
-    printf("Enter ID to search: ");
-    scanf("%d", &search_ID);
+   do {
+      if(ret!=-1) printf("invalid ID\n");
+      printf("please enter a student's ID: ");
+      ret=scanf("%d",&ID);
+      delete_buffer();
+   }while(ret==0 || ID <0);// nhap ID
 
    student s;
-   bool found = false;  //Ban đầu chưa có sinh viên nào cần tìm 
+   bool found = false;  //Ban đầu chưa có sinh viên nào cần tìm
     //Bắt đầu đọc trong file
     //Đọc theo format: ID|FirstName|LastName|GPA
-   while (fscanf(f, "%d|%99[^|]|%99[^|]|%f", &s.ID, s.FirstName, s.LastName, &s.GPA) == 4) { 
-      if (s.ID == search_ID) {   //Kiểm tra xem ID có khớp không
+   while (fscanf(f, "%d |%99[^|]|%99[^|]| %f", &s.ID, s.FirstName, s.LastName, &s.GPA) == 4) {
+      if (s.ID == ID) {   //Kiểm tra xem ID có khớp không
         //printf ra nếu tìm thấy:
          printf("\nStudent found:\n");
          printf("ID: %d\n", s.ID);
@@ -262,12 +266,12 @@ void search_by_id(){
          printf("Last Name: %s\n", s.LastName);
          printf("GPA: %.2f\n", s.GPA);
          found = true; //khi tìm thấy => True
-         break; //khi tìm thấy thì dừng không tìm nữa 
+         break; //khi tìm thấy thì dừng không tìm nữa
       }
    }
     //when not found
-   if (!found) { 
-      printf("No student found with ID: %d\n", search_ID);
+   if (!found) {
+      printf("No student found with ID: %d\n",ID);
    }
 
    fclose(f); //close file
