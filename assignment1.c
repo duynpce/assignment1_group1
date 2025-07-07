@@ -174,7 +174,7 @@ void add(){
             if (ret!=-1) printf("INVALID NAME, PLEASE TYPE AGAIN\n");
             printf("Type New First Name: ");
             ret=scanf("%99[^\n]", NewFirstName);
-            delete_buffer(); 
+            delete_buffer();
             }
             while(ret==0 || valid_name(NewFirstName)==0);
             strcpy(students[found].FirstName,NewFirstName);
@@ -380,9 +380,10 @@ void display(){/// ham
    }
 
    qsort(Std,count,sizeof(student),cmp);/// sap xep (qsort la ham co san) ///npduy
-
+   printf("%4s %-10s %-20s %8s\n", "ID", "Name", "Last Name" ,"Grade");
+   printf("=============================================\n");
     for(int i=0;i<count;i++)
-    printf("%d %s %s %.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
+    printf("%4d %-10s %-20s %8.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
     free(Std);///free mang///viet
     fclose(open);//dong file
 }////khong sua ham nay
