@@ -155,6 +155,8 @@ void add(){
    do
    {
       type=-1;
+      printf("=========================================\n");
+      printf("WORKING ON STUDENT'S ID %d\n", MustFindID);
       printf("1: New First Name\n");
       printf("2: New Last Name\n");
       printf("3: New GPA\n");
@@ -166,20 +168,30 @@ void add(){
       {
          case 1:
          {
+            int ret=-1;
             char NewFirstName[100];
+            do {
+            if (ret!=-1) printf("INVALID NAME, PLEASE TYPE AGAIN\n");
             printf("Type New First Name: ");
-            scanf("%s",NewFirstName);
-            delete_buffer();
+            ret=scanf("%99[^\n]", NewFirstName);
+            delete_buffer(); 
+            }
+            while(ret==0 || valid_name(NewFirstName)==0);
             strcpy(students[found].FirstName,NewFirstName);
             break;
          }
 
          case 2:
          {
+            int ret=-1;
             char NewLastName[100];
+            do {
+            if (ret!=-1) printf("INVALID LAST NAME, PLEASE TYPE AGAIN");
             printf("Type New Last Name: ");
             scanf("%99[^\n]",NewLastName);
             delete_buffer();
+            }
+            while (ret==0 || valid_name(NewLastName)==0);
             strcpy(students[found].LastName,NewLastName);
             break;
          }
@@ -189,7 +201,7 @@ void add(){
          float NewGPA;
          int ret=-1;///dieu kien check xem co phai lan dau chay khong
          do {
-         if(ret!=-1) printf("invalid GPA\n");
+         if(ret!=-1) printf("invalid GPA (GPA must be a positive number in RANGE [0,10])\n");
          printf("Type New GPA: ");
          ret=scanf("%f",&NewGPA);
          students[found].GPA = NewGPA;
@@ -199,7 +211,7 @@ void add(){
          }
          default:
          if (type!=0)
-            printf("Please type a NUMBER in range [1,3]\n");
+            printf("Please type a NUMBER in range [0,3]\n");
          }
       }
       while (type!=0);
@@ -210,7 +222,6 @@ void add(){
          }
          fclose(fo);
          printf("Edit successfully\n");
-
 }
 
 
