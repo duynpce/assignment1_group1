@@ -132,7 +132,7 @@ void add(){
    void edit(){
    int MustFindID;
    int StudentIndex=0,found=-1;
-   student students[1000];
+   student students[100000];
    printf("Enter Student's ID that you want to edit: ");
    scanf("%d", &MustFindID);
    FILE *fi = fopen("student.txt","r");
@@ -380,10 +380,10 @@ void display(){/// ham
    }
 
    qsort(Std,count,sizeof(student),cmp);/// sap xep (qsort la ham co san) ///npduy
-   printf("%4s %-10s %-20s %8s\n", "ID", "Name", "Last Name" ,"Grade");
-   printf("=============================================\n");
+   printf("%4s %-15s %-30s %8s\n", "ID", "Name", "Last Name" ,"Grade");
+   printf("============================================================\n");
     for(int i=0;i<count;i++)
-    printf("%4d %-10s %-20s %8.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
+    printf("%4d %-15s %-30s %8.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
     free(Std);///free mang///viet
     fclose(open);//dong file
 }////khong sua ham nay
