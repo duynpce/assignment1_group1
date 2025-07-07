@@ -1,10 +1,26 @@
 #include "assignment1.h"
 
-void delete_buffer(){/// ham nay xoa buffer neu nhu con buffer
+int delete_buffer(){/// ham nay xoa buffer neu nhu con buffer va tra ve 1 neu co xoa, tra ve 0 neu khong xoa
    int delete;
-   while(delete=getchar()!='\n' && delete!=EOF);
+   int has_deleted=0;
+   while(delete=getchar()!='\n' && delete!=EOF){
+    has_deleted=1;
+   }
+   return has_deleted;
 }
 
+int cmp(const void *a, const void *b) { /// const void la do ham qsort yeu cau , (student *) ep kieu ve student
+   return stricmp(((student *)a)->LastName, ((student *)b)->LastName);//stricmp la strcmp nhung khong phan biet viet hoa hay viet thuong
+}
+
+int valid_name(char str[]){
+   for(int i=0;i<strlen(str);i++){
+      if((str[i]>'z' || str[i]<'a') && (str[i]>'Z' || str[i]<'A') && str[i]!=' '){
+         return 0;
+      }
+   }
+   return 1;
+}
 void print_menu(){
     //system("clear"); // for macos, linux
 //system("cls"); // for windows
@@ -50,9 +66,11 @@ int make_choice(int min, int max){
 }
 
 void add(){
-   int ID,ret=-1;//tao id va ret(bien kiem tra xem nhap co thanh cong hay khong)
+   int ID,ret=-1,has_char;//tao id va ret va has_char(bien kiem tra xem nhap co thanh cong hay khong)
    char first_name[100],last_name[100]; ///tao first name voi last name
    float GPA;//tao GPA
+   char type_of_err_number[3][100]={"string ","negative number","number bigger than 10"};
+   char type_of_err_str[2][100]={"is empty","contain invalid character"};
    FILE * add_text=fopen("student.txt","a");///tao file de them du lieu vao neu nhu file khong ton tai neu file ton tai thi them du lieu vao
    if(add_text==NULL){
       printf("can't open this file");
@@ -60,35 +78,50 @@ void add(){
    }
 
    do {
-      if(ret!=-1) printf("invalid ID\n");
+      if(ret!=-1) {
+         if(has_char==1) ret=0;
+         printf("invalid ID,input contain a %s, please enter posivite number\n",type_of_err_number[ret]);
+      }
       printf("please enter a student's ID: ");
       ret=scanf("%d",&ID);
-      delete_buffer();
-   }while(ret==0 || ID <0);// nhap ID
+      has_char=delete_buffer();
+   }while(ret==0 || ID <0 || has_char==1);// nhap ID
 
    ret=-1;
    do{
-       if(ret!=-1) printf("Invalid first name\n");
+       if(ret!=-1) {
+         printf("Invalid first name, input %s\n",type_of_err_str[ret]);
+         if(ret==1)
+         printf("first name can only contain a->z(uppercase and lowercase)\n");
+       }
        printf("please enter a student's first name: ");
        ret=scanf("%99[^\n]",first_name);
-       delete_buffer();// nhap first name
-   }while(ret==0);
+       delete_buffer();
+   }while(ret==0 || valid_name(first_name)==0);// nhap first name
 
    ret=-1;
    do{
-       if(ret!=-1) printf("Invalid last name\n");
+       if(ret!=-1) {
+         printf("Invalid last name, input %s\n",type_of_err_str[ret]);
+         if(ret==1)
+         printf("last name can only contain a->z(uppercase and lowercase)\n");
+       }
        printf("please enter a student's last name: ");
        scanf("%99[^\n]",last_name);
        delete_buffer();//nhap last name
-    }while(ret==0);
+    }while(ret==0 || valid_name(last_name)==0);
 
     ret=-1;///dieu kien check xem co phai lan dau chay khong
    do {
-      if(ret!=-1) printf("invalid GPA\n");
+     if(ret!=-1) {
+         if(GPA>10) ret=2;
+         if(has_char==1 && GPA <=10) ret=0;
+         printf("invalid GPA,input contain a %s, please enter positive number from 1 to 10\n",type_of_err_number[ret]);
+      }
       printf("please enter a student's GPA: ");
       ret=scanf("%f",&GPA);
-      delete_buffer();
-   }while(ret==0 || GPA>10 || GPA <0);//nhap GPA
+      has_char=delete_buffer();
+   }while(ret==0 || GPA>10 || GPA <0 || has_char==1);//nhap GPA
 
    fprintf(add_text,"%d |%s|%s| %f\n",ID,first_name,last_name,GPA);/// dien thong tin vao file, format dien vao la "id,|first name|last name| GPA"; để dễ  kiểm soát
    fclose(add_text);///dong file
@@ -310,4 +343,35 @@ void search_by_name() {
 }
 
 
-void display(){}
+void display(){/// ham
+   int size=100,count,id,type,ret=-1;
+   float gpa;
+   char lname[100],fname[100];
+   student *Std;
+   FILE * open=fopen("student.txt","r");
+
+   if(open==NULL){
+      printf("can't open this file");
+      return;
+   }
+
+   for(count=0;fscanf(open,"%d |%99[^|]|%99[^|]| %f",&id,fname,lname,&gpa)==4;count++); /// dem so luong hoc sinh
+
+   while(count>size){//chinh kich thuoc cho phu hop
+      size*=2;///nay
+   }
+
+   Std=malloc(sizeof(student)*size);///tao mang hoc sinh voi kich thuoc phu hop
+   rewind(open); ///sau khi dem thi open dang o cuoi -> khien open tro ve dau
+
+   for(int i=0;i<count;i++){
+      fscanf(open,"%d |%99[^|]|%99[^|]| %f",&Std[i].ID,Std[i].FirstName,Std[i].LastName,&Std[i].GPA);//doc file /// do
+   }
+
+   qsort(Std,count,sizeof(student),cmp);/// sap xep (qsort la ham co san) ///npduy
+
+    for(int i=0;i<count;i++)
+    printf("%d %s %s %.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
+    free(Std);///free mang///viet
+    fclose(open);//dong file
+}////khong sua ham nay

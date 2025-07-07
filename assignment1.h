@@ -12,7 +12,9 @@ char FirstName[100], LastName[100];
 float GPA;
 }student;
 
-void delete_buffer();
+int delete_buffer();
+int cmp(const void *a, const void *b);
+int valid_name(char str[]);
 void print_menu();
 int make_choice(int min, int max);
 void add();
