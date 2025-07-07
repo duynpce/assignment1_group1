@@ -207,9 +207,9 @@ void add(){
          FILE *fo=fopen("student.txt","w");
          for (int i = 0; i < StudentIndex; i++) {
          fprintf(fo,"%d |%s|%s| %.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
+         }
          fclose(fo);
          printf("Edit successfully\n");
-   }
 
 }
 
