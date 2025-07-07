@@ -131,11 +131,18 @@ void add(){
 
    void edit(){
    int MustFindID;
-   int StudentIndex=0,found=-1;
-   student students[100000];
+   int StudentIndex=0,found=-1,size=0,tid;
+   float tgpa;
+   char tfname[100],tlname[100]; //khai bao tam cac kieu du lieu de dem
+   FILE *fi = fopen("student.txt","r");
+   for(size=0;fscanf(fi,"%d |%99[^|]|%99[^|]| %f",&tid,tfname,tlname,&tgpa)==4;size++); /// dem so luong hoc sinh
+   size+=5;
+   student* students;
+   students=malloc(sizeof(student)*size);///tao mang hoc sinh voi kich thuoc phu hop
+   rewind(fi); ///sau khi dem thi fi dang o cuoi -> khien open tro ve dau
    printf("Enter Student's ID that you want to edit: ");
    scanf("%d", &MustFindID);
-   FILE *fi = fopen("student.txt","r");
+
    while (fscanf(fi,"%d |%99[^|]|%99[^|]| %f",&students[StudentIndex].ID, students[StudentIndex].FirstName, students[StudentIndex].LastName, &students[StudentIndex].GPA) == 4)
    {
       if (students[StudentIndex].ID==MustFindID)
@@ -144,7 +151,9 @@ void add(){
       }
       StudentIndex++;
    }
+
    fclose(fi);
+   
    if (found==-1)
    {
       printf("Student with ID: %d does not exist\n",MustFindID);
