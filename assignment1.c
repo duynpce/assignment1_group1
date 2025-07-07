@@ -1,4 +1,35 @@
 #include "assignment1.h"
+int count_student(){
+   int size=100,count,id;
+   char lname[31],fname[16];
+   float gpa;
+   FILE *open=fopen("student.txt","r");
+   if(open==NULL){
+      return 0;
+   }
+   for(count=0;fscanf(open,"%d |%15[^|]|%30[^|]| %f",&id,fname,lname,&gpa)==4;count++);
+   return count;
+}
+int existed_ID(int ID){
+   int size=count_student();
+   int *existed_id=malloc(sizeof(int)*size);
+   char lname[31],fname[16];
+   float gpa;
+   FILE *open=fopen("student.txt","r");
+   if(open==NULL){
+      return 0;
+   }
+
+   for(int i=0;i<size;i++){
+      fscanf(open,"%d |%15[^|]|%30[^|]| %f",&existed_id[i],fname,lname,&gpa)==4;
+   }
+
+    for(int i=0;i<size;i++){
+      if(ID==existed_id[i])
+      return 1;
+   }
+   return 0;
+}
 
 int delete_buffer(){/// ham nay xoa buffer neu nhu con buffer va tra ve 1 neu co xoa, tra ve 0 neu khong xoa
    int delete;
@@ -66,11 +97,14 @@ int make_choice(int min, int max){
 }
 
 void add(){
-   int ID,ret=-1,has_char;//tao id va ret va has_char(bien kiem tra xem nhap co thanh cong hay khong)
-   char first_name[100],last_name[100]; ///tao first name voi last name
+   int ID,ret=-1,has_char,size=count_student(),existed_id,lenOfStr;//tao id va ret va has_char(bien kiem tra xem nhap co thanh cong hay khong)
+   char first_name[16],last_name[31]; ///tao first name voi last name
    float GPA;//tao GPA
-   char type_of_err_number[3][100]={"string ","negative number","number bigger than 10"};
-   char type_of_err_str[2][100]={"is empty","contain invalid character"};
+   char type_of_err_number[4][30]={"string ","negative number","number bigger than 10","existed ID"};
+   char type_of_err_str[4][30]={"is empty","contain invalid character","first name only use one word","is too long"};
+   int id;
+   char lname[31],fname[16];
+   float gpa;
    FILE * add_text=fopen("student.txt","a");///tao file de them du lieu vao neu nhu file khong ton tai neu file ton tai thi them du lieu vao
    if(add_text==NULL){
       printf("can't open this file");
@@ -80,36 +114,41 @@ void add(){
    do {
       if(ret!=-1) {
          if(has_char==1) ret=0;
-         printf("invalid ID,input contain a %s, please enter posivite number\n",type_of_err_number[ret]);
+         if(existed_id==1) ret=3;
+         printf("invalid ID,input contain a %s, please enter positive number\n",type_of_err_number[ret]);
       }
       printf("please enter a student's ID: ");
       ret=scanf("%d",&ID);
       has_char=delete_buffer();
-   }while(ret==0 || ID <0 || has_char==1);// nhap ID
+      existed_id=existed_ID(ID);
+   }while(ret==0 || ID <0 || has_char==1 || existed_id==1);// nhap ID
 
    ret=-1;
    do{
        if(ret!=-1) {
+         if(has_char==1 && strlen(first_name)<15) ret=2;
+         else if(has_char==1 && strlen(first_name)==15) ret=3;
          printf("Invalid first name, input %s\n",type_of_err_str[ret]);
-         if(ret==1)
-         printf("first name can only contain a->z(uppercase and lowercase)\n");
+         if(ret>0)
+         printf("first name can only contain a string of length 15 from a to z(uppercase or lowercase)\n");
        }
        printf("please enter a student's first name: ");
-       ret=scanf("%99[^\n]",first_name);
-       delete_buffer();
-   }while(ret==0 || valid_name(first_name)==0);// nhap first name
+       ret=scanf("%15s",first_name);
+       has_char=delete_buffer();
+   }while(ret==0 || valid_name(first_name)==0 || has_char==1);// nhap first name
 
    ret=-1;
    do{
        if(ret!=-1) {
+         if(has_char==1) ret=3;
          printf("Invalid last name, input %s\n",type_of_err_str[ret]);
-         if(ret==1)
-         printf("last name can only contain a->z(uppercase and lowercase)\n");
+         if(ret==1 || ret==3)
+         printf("last name can only contain a string of length 30 from a to z(uppercase or lowercase)\n");
        }
        printf("please enter a student's last name: ");
-       scanf("%99[^\n]",last_name);
-       delete_buffer();//nhap last name
-    }while(ret==0 || valid_name(last_name)==0);
+       ret=scanf("%30[^\n]",last_name);
+       has_char=delete_buffer();//nhap last name
+    }while(ret==0 || valid_name(last_name)==0 || has_char==1);
 
     ret=-1;///dieu kien check xem co phai lan dau chay khong
    do {
@@ -364,25 +403,24 @@ void search_by_name() {
 
 
 void display(){/// ham
-   int size=100,count,id,type,ret=-1;
+   int size=100,count,ret=-1;
    float gpa;
    char lname[100],fname[100];
    student *Std;
    FILE * open=fopen("student.txt","r");
 
    if(open==NULL){
-      printf("can't open this file");
+      printf("no information to display");
       return;
    }
 
-   for(count=0;fscanf(open,"%d |%99[^|]|%99[^|]| %f",&id,fname,lname,&gpa)==4;count++); /// dem so luong hoc sinh
+   count=count_student();
 
    while(count>size){//chinh kich thuoc cho phu hop
       size*=2;///nay
    }
 
    Std=malloc(sizeof(student)*size);///tao mang hoc sinh voi kich thuoc phu hop
-   rewind(open); ///sau khi dem thi open dang o cuoi -> khien open tro ve dau
 
    for(int i=0;i<count;i++){
       fscanf(open,"%d |%99[^|]|%99[^|]| %f",&Std[i].ID,Std[i].FirstName,Std[i].LastName,&Std[i].GPA);//doc file /// do

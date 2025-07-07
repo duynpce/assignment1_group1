@@ -12,6 +12,8 @@ char FirstName[100], LastName[100];
 float GPA;
 }student;
 
+int count_student();
+int ID_exsited(int ID);
 int delete_buffer();
 int cmp(const void *a, const void *b);
 int valid_name(char str[]);
