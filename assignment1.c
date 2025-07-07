@@ -101,7 +101,7 @@ void add(){
    char first_name[16],last_name[31]; ///tao first name voi last name
    float GPA;//tao GPA
    char type_of_err_number[4][30]={"string ","negative number","number bigger than 10","existed ID"};
-   char type_of_err_str[4][30]={"is empty","contain invalid character","first name only use one word","is too long"};
+   char type_of_err_str[4][30]={"is empty","contain invalid character","is more than one word","is too long"};
    int id;
    char lname[31],fname[16];
    float gpa;
@@ -113,8 +113,8 @@ void add(){
 
    do {
       if(ret!=-1) {
-         if(has_char==1) ret=0;
          if(existed_id==1) ret=3;
+         if(has_char==1) ret=0;
          printf("invalid ID,input contain a %s, please enter positive number\n",type_of_err_number[ret]);
       }
       printf("please enter a student's ID: ");
@@ -130,7 +130,7 @@ void add(){
          else if(has_char==1 && strlen(first_name)==15) ret=3;
          printf("Invalid first name, input %s\n",type_of_err_str[ret]);
          if(ret>0)
-         printf("first name can only contain a string of length 15 from a to z(uppercase or lowercase)\n");
+         printf("first name can only contain a word of length 15 from a to z(uppercase or lowercase)\n");
        }
        printf("please enter a student's first name: ");
        ret=scanf("%15s",first_name);
@@ -192,7 +192,7 @@ void add(){
    }
 
    fclose(fi);
-   
+
    if (found==-1)
    {
       printf("Student with ID: %d does not exist\n",MustFindID);
@@ -427,10 +427,10 @@ void display(){/// ham
    }
 
    qsort(Std,count,sizeof(student),cmp);/// sap xep (qsort la ham co san) ///npduy
-   printf("%4s %-15s %-30s %8s\n", "ID", "Name", "Last Name" ,"Grade");
-   printf("============================================================\n");
+   printf("%10s %-15s %-30s %8s\n", "ID", "Name", "Last Name" ,"Grade");
+   printf("===================================================================\n");
     for(int i=0;i<count;i++)
-    printf("%4d %-15s %-30s %8.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
+    printf("%10d %-15s %-30s %8.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
     free(Std);///free mang///viet
     fclose(open);//dong file
 }////khong sua ham nay
