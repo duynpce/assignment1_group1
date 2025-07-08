@@ -23,9 +23,8 @@ int existed_ID(int ID){
 
    for(int i=0;i<size;i++){
       fscanf(open,"%d |%15[^|]|%30[^|]| %f",&existed_id[i],fname,lname,&gpa)==4;
-   fclose(open);
    }
-
+   fclose(open);
     for(int i=0;i<size;i++){
       if(ID==existed_id[i]){
         free(existed_id);
