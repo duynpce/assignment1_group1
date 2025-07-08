@@ -175,7 +175,7 @@ void add(){
 
    void edit(){
    int MustFindID;
-   int StudentIndex=0,found=-1,size=count_student()+5; 
+   int StudentIndex=0,found=-1,size=count_student()+5;
    FILE *fi = fopen("student.txt","r");
    student* students;
    students=malloc(sizeof(student)*size);///tao mang hoc sinh voi kich thuoc phu hop
@@ -403,12 +403,9 @@ void search_by_name() {
 
 
 void display(){/// ham
-   int size;
-   float gpa;
-   char lname[100],fname[100];
+   int size=count_student();
    student *Std;
    FILE * open=fopen("student.txt","r");
-   size=count_student();
     if(open==NULL || size==0){
       printf("no information to display");
       return;
