@@ -184,16 +184,16 @@ void add(){
 
    while (fscanf(fi,"%d |%99[^|]|%99[^|]| %f",&students[StudentIndex].ID, students[StudentIndex].FirstName, students[StudentIndex].LastName, &students[StudentIndex].GPA) == 4)
    {
-      if (students[StudentIndex].ID==MustFindID)
+      if (students[StudentIndex].ID==MustFindID) // tim vi tri cua id can tim trong luc nap du lieu
       {
-         found=StudentIndex;
+         found=StudentIndex; // danh dau found la vi tri cua hoc sinh voi id can tim
       }
       StudentIndex++;
    }
 
    fclose(fi);
 
-   if (found==-1)
+   if (found==-1) // neu khong thay hoc sinh voi id can tim thi mac dinh found = -1 va in ra khong ton tai va return
    {
       printf("Student with ID %d does not exist\n",MustFindID);
       return;
@@ -202,7 +202,7 @@ void add(){
    int type=-1;
    do
    {
-      type=-1;
+      type=-1; // cho type = -1 de tranh truong hop nhap vao ki tu khong phai so 
       printf("=========================================\n");
       printf("WORKING ON STUDENT'S ID %d\n", MustFindID);
       printf("1: New First Name\n");
@@ -216,12 +216,12 @@ void add(){
       {
          case 1:
          {
-            int ret=-1;
+            int ret=-1; // dieu kien lan dau nhap
             char NewFirstName[100];
             do {
-            if (ret!=-1) printf("INVALID NAME, PLEASE TYPE AGAIN\n");
+            if (ret!=-1) printf("INVALID NAME, PLEASE TYPE AGAIN\n"); // neu khong phai lan dau nhap thi mac dinh la nhap sai
             printf("Type New First Name: ");
-            ret=scanf("%99[^\n]", NewFirstName);
+            ret=scanf("%99[^\n]", NewFirstName); // ret = 1 neu nhap duoc du lieu va = 0 neu khong nhap duoc du lieu
             delete_buffer();
             }
             while(ret==0 || valid_name(NewFirstName)==0);
@@ -258,17 +258,18 @@ void add(){
             break;
          }
          default:
-         if (type!=0)
+         if (type!=0) // nhung truong hop con lai khong bao gom 0, neu la so <0 va >3 thi se nhap lai
             printf("Please type a NUMBER in range [0,3]\n");
          }
       }
-      while (type!=0);
-         remove("student.txt");
+      while (type!=0); // dieu kien lap lai vong lap neu nguoi dung van muon tiep tuc chinh sua hoc sinh voi id nay
+         remove("student.txt"); 
          FILE *fo=fopen("student.txt","w");
          for (int i = 0; i < StudentIndex; i++) {
          fprintf(fo,"%d |%s|%s| %.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
          }
          fclose(fo);
+         free(students); // do khong can truy cap nua nen giai phong mang
          printf("Edit successfully\n");
 }
 
