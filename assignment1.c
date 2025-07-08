@@ -27,9 +27,12 @@ int existed_ID(int ID){
    }
 
     for(int i=0;i<size;i++){
-      if(ID==existed_id[i])
-      return 1;
+      if(ID==existed_id[i]){
+        free(existed_id);
+        return 1;
+      }
    }
+   free(existed_id);
    return 0;
 }
 
@@ -400,33 +403,26 @@ void search_by_name() {
 
 
 void display(){/// ham
-   int size=100,count,ret=-1;
+   int size;
    float gpa;
    char lname[100],fname[100];
    student *Std;
    FILE * open=fopen("student.txt","r");
-
-   if(open==NULL){
+   size=count_student();
+    if(open==NULL || size==0){
       printf("no information to display");
       return;
    }
-
-   count=count_student();
-
-   while(count>size){//chinh kich thuoc cho phu hop
-      size*=2;///nay
-   }
-
    Std=malloc(sizeof(student)*size);///tao mang hoc sinh voi kich thuoc phu hop
 
-   for(int i=0;i<count;i++){
-      fscanf(open,"%d |%99[^|]|%99[^|]| %f",&Std[i].ID,Std[i].FirstName,Std[i].LastName,&Std[i].GPA);//doc file /// do
+   for(int i=0;i<size;i++){
+      fscanf(open,"%d |%15[^|]|%30[^|]| %f",&Std[i].ID,Std[i].FirstName,Std[i].LastName,&Std[i].GPA);//doc file /// do
    }
 
-   qsort(Std,count,sizeof(student),cmp);/// sap xep (qsort la ham co san) ///npduy
+   qsort(Std,size,sizeof(student),cmp);/// sap xep (qsort la ham co san) ///npduy
    printf("%10s %-15s %-30s %8s\n", "ID", "Name", "Last Name" ,"Grade");
    printf("===================================================================\n");
-    for(int i=0;i<count;i++)
+    for(int i=0;i<size;i++)
     printf("%10d %-15s %-30s %8.2f\n",Std[i].ID,Std[i].FirstName,Std[i].LastName,Std[i].GPA);
     free(Std);///free mang///viet
     fclose(open);//dong file
