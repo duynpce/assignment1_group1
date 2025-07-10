@@ -1,5 +1,5 @@
 #include "assignment1.h"
-int count_student(){
+int count_student(){//dem so hoc sinh
    int size=100,count,id;
    char lname[31],fname[16];
    float gpa;
@@ -11,7 +11,7 @@ int count_student(){
    fclose(open);
    return count;
 }
-int existed_ID(int ID){
+int existed_ID(int ID){//kiem tra xem ID co ton tai hay chua
    int size=count_student();
    int *existed_id=malloc(sizeof(int)*size);
    char lname[31],fname[16];
@@ -48,7 +48,7 @@ int cmp(const void *a, const void *b) { /// const void la do ham qsort yeu cau ,
    return stricmp(((student *)a)->LastName, ((student *)b)->LastName);//stricmp la strcmp nhung khong phan biet viet hoa hay viet thuong
 }
 
-int valid_name(char str[]){
+int valid_name(char str[]){///kiem tra xem name co hop le hay khong
    for(int i=0;i<strlen(str);i++){
       if((str[i]>'z' || str[i]<'a') && (str[i]>'Z' || str[i]<'A') && str[i]!=' '){
          return 0;
@@ -101,14 +101,11 @@ int make_choice(int min, int max){
 }
 
 void add(){
-   int ID,ret=-1,has_char,size=count_student(),existed_id,lenOfStr;//tao id va ret va has_char(bien kiem tra xem nhap co thanh cong hay khong)
+   int ID,ret=-1,has_char,size=count_student(),existed_id;//tao id va ret va has_char(bien kiem tra xem nhap co thanh cong hay khong)
    char first_name[16],last_name[31]; ///tao first name voi last name
    float GPA;//tao GPA
-   char type_of_err_number[4][30]={"string ","negative number","number bigger than 10","existed ID"};
-   char type_of_err_str[4][30]={"is empty","contain invalid character","is more than one word","is too long"};
-   int id;
-   char lname[31],fname[16];
-   float gpa;
+   char type_of_err_number[4][30]={"string ","negative number","number bigger than 10","existed ID"};//cac loi co the xay ra voi number
+   char type_of_err_str[4][30]={"is empty","contain invalid character","is more than one word","is too long"};///cac loi co the xay ra voi string
    FILE * add_text=fopen("student.txt","a");///tao file de them du lieu vao neu nhu file khong ton tai neu file ton tai thi them du lieu vao
    if(add_text==NULL){
       printf("can't open this file");
@@ -117,8 +114,8 @@ void add(){
 
    do {
       if(ret!=-1) {
-         if(existed_id==1) ret=3;
-         if(has_char==1) ret=0;
+         if(existed_id==1) ret=3;// ret nhu la bien de biet loi gi xay ra
+         if(has_char==1) ret=0;//set ret
          printf("invalid ID,input contain a %s, please enter positive number\n",type_of_err_number[ret]);
       }
       printf("please enter a student's ID: ");
@@ -157,9 +154,10 @@ void add(){
     ret=-1;///dieu kien check xem co phai lan dau chay khong
    do {
      if(ret!=-1) {
-         if(GPA>10) ret=2;
-         if(has_char==1 && GPA <=10) ret=0;
-         printf("invalid GPA,input contain a %s, please enter positive number from 1 to 10\n",type_of_err_number[ret]);
+         if(GPA<0) ret=1;
+         else if(GPA>10) ret=2;
+         if(has_char==1) ret=0;
+         printf("invalid GPA,input contain a %s, please enter positive number from 0 to 10\n",type_of_err_number[ret]);
       }
       printf("please enter a student's GPA: ");
       ret=scanf("%f",&GPA);
@@ -201,7 +199,7 @@ void add(){
    int type=-1;
    do
    {
-      type=-1; // cho type = -1 de tranh truong hop nhap vao ki tu khong phai so 
+      type=-1; // cho type = -1 de tranh truong hop nhap vao ki tu khong phai so
       printf("=========================================\n");
       printf("WORKING ON STUDENT'S ID %d\n", MustFindID);
       printf("1: New First Name\n");
@@ -262,7 +260,7 @@ void add(){
          }
       }
       while (type!=0); // dieu kien lap lai vong lap neu nguoi dung van muon tiep tuc chinh sua hoc sinh voi id nay
-         remove("student.txt"); 
+         remove("student.txt");
          FILE *fo=fopen("student.txt","w");
          for (int i = 0; i < StudentIndex; i++) {
          fprintf(fo,"%d |%s|%s| %.2f\n", students[i].ID, students[i].FirstName, students[i].LastName, students[i].GPA);
